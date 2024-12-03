@@ -30,7 +30,7 @@ spec:
             - "--objstore.config=$(OBJSTORE_CONFIG)"
             - "--data-dir=/data"
             - "--wait"
-              # Certifique-se de que o Thanos está usando o volume correto
+              
           env:
             - name: OBJSTORE_CONFIG
               valueFrom:
@@ -42,7 +42,7 @@ spec:
               mountPath: /data
       volumes:
         - name: data
-          emptyDir: {}  # Cria um volume temporário no nó para armazenamento de dados
+          emptyDir: {}  
 ---
 apiVersion: v1
 kind: Service

@@ -38,3 +38,7 @@ remote_write:
     - Atende às consultas de métricas.
     - Atua como uma interface central que consulta tanto dados em tempo real (do Receiver) quanto históricos (do Store Gateway).
     - Pode realizar deduplicação de dados para garantir que múltiplos Prometheus com métricas redundantes não impactem os resultados das consultas.
+
+
+#Desenho da solução:
+![image](https://github.com/user-attachments/assets/a5e6e864-73aa-45e0-bfad-b2b30c0222ca)

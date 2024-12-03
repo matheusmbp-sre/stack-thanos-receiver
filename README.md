@@ -11,7 +11,7 @@ Fonte: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
 #Explo de remote_write no Prometheus configuration:
 
 remote_write:
-- url: http://thanos-receive-container-ip:10908/api/v1/receive
+- url: http://thanos-receiver.monitoring.svc.cluster.local:10908/api/v1/receive
 
 
 #Funcionamento:

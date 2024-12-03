@@ -21,7 +21,7 @@ remote_write:
 
     - O Receiver coleta métricas enviadas via remote_write do Prometheus.
     - Distribui as métricas recebidas em diferentes "tenants" ou clusters, com base em configurações de labels (exemplo: receive_cluster).
-    - Utiliza um hashring para centralizar os endpoints para balancear as métricas entre os diferentes pods de Receiver.
+    - Utiliza um hashring para centralizar os endpoints e balancear as métricas entre os diferentes pods de Receiver.
 
 2. Thanos Store Gateway
 

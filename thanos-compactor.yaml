@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-compactor
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: compactor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thanos
+      component: compactor
+  template:
+    metadata:
+      labels:
+        app: thanos
+        component: compactor
+    spec:
+      securityContext:
+        runAsUser: 1000      # UID do usuário dentro do container
+        runAsGroup: 1000     # GID do grupo dentro do container
+        fsGroup: 1000        # GID do grupo para os volumes
+      containers:
+        - name: thanos
+          image: quay.io/thanos/thanos:v0.32.2
+          args:
+            - "compact"
+            - "--objstore.config=$(OBJSTORE_CONFIG)"
+            - "--data-dir=/data"
+            - "--wait"
+              # Certifique-se de que o Thanos está usando o volume correto
+          env:
+            - name: OBJSTORE_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: thanos-s3-config
+                  key: config
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}  # Cria um volume temporário no nó para armazenamento de dados
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-compactor
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: compactor
+spec:
+  ports:
+    - name: grpc
+      port: 10901
+      targetPort: 10901
+  selector:
+    app: thanos
+    component: compactor
+  type: ClusterIP

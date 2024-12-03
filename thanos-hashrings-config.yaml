@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thanos-hashrings
+  namespace: monitoring
+data:
+  hashrings.json: |
+    [
+      {
+        "endpoints": [
+          "thanos-receiver.monitoring.svc.cluster.local:10908"
+        ]
+      }
+    ]
+

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thanos-s3-config
+  namespace: monitoring
+data:
+  config: |
+    type: S3
+    config:
+      bucket: ""
+      region: "us-east-1"
+      access_key: ""
+      secret_key: ""
+      endpoint: "s3.amazonaws.com"
+

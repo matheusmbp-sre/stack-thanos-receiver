@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-querier
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: querier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: thanos
+      component: querier
+  template:
+    metadata:
+      labels:
+        app: thanos
+        component: querier
+    spec:
+      containers:
+        - name: thanos
+          image: quay.io/thanos/thanos:v0.32.2
+          args:
+            - "query"
+            - "--grpc-address=0.0.0.0:10901"
+            - "--http-address=0.0.0.0:10902"
+            - "--store=thanos-receiver:10901"
+            - "--store=thanos-store-gateway:10901"
+          ports:
+            - containerPort: 10901
+              name: grpc
+            - containerPort: 10902
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-querier
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: querier
+spec:
+  ports:
+    - name: grpc
+      port: 10901
+      targetPort: 10901
+    - name: http
+      port: 10902
+      targetPort: 10902
+  selector:
+    app: thanos
+    component: querier
+  type: ClusterIP
+

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thanos-receiver
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: receiver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: thanos
+      component: receiver
+  template:
+    metadata:
+      labels:
+        app: thanos
+        component: receiver
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: thanos
+          image: quay.io/thanos/thanos:v0.32.2
+          args:
+            - "receive"
+            - "--grpc-address=0.0.0.0:10901"
+            - "--http-address=0.0.0.0:10902"
+            - "--remote-write.address=0.0.0.0:10908"
+            - "--tsdb.path=/data"
+            - "--objstore.config=$(OBJSTORE_CONFIG)"
+            - "--receive.hashrings-file=/etc/thanos/hashrings.json"
+            - "--label=receive_cluster2=\"eks-mbappe-ohio-3\""
+            - "--label=receive_cluster1=\"eks-mbappe-virginia-3\""
+            - "--receive.tenant-label-name=tenant"
+            - "--receive.hashrings-algorithm=hashmod"
+            - "--receive.local-endpoint=thanos-receiver.monitoring.svc.cluster.local:10908" 
+          env:
+            - name: OBJSTORE_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: thanos-s3-config
+                  key: config
+          ports:
+            - containerPort: 10901
+              name: grpc
+            - containerPort: 10902
+              name: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: hashrings
+              mountPath: /etc/thanos
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: hashrings
+          configMap:
+            name: thanos-hashrings
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: thanos-receiver
+  namespace: monitoring
+  labels:
+    app: thanos
+    component: receiver
+spec:
+  ports:
+    - name: grpc
+      port: 10901
+      targetPort: 10901
+    - name: http
+      port: 10902
+      targetPort: 10902
+  selector:
+    app: thanos
+    component: receiver
+  type: LoadBalancer

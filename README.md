@@ -2,7 +2,7 @@
 
 #Objetivo
 
-Este projeto tem como objetivo implementa uma solução de monitoramento e gerenciamento de métricas com o Thanos. Ele permite a coleta, armazenamento e consulta de métricas de múltiplos clusters Prometheus, garantindo alta disponibilidade, escalabilidade e retenção de longo prazo. Ideal para ambientes em larga escala com diversos clusters k8s. 
+Este projeto tem como objetivo implementar uma solução de monitoramento e gerenciamento de métricas com o Thanos. Ele permite a coleta, armazenamento e consulta de métricas de múltiplos clusters Prometheus, garantindo alta disponibilidade, escalabilidade e retenção de longo prazo. Ideal para ambientes em larga escala com diversos clusters k8s. 
 fonte: https://thanos.io/v0.20/components/receive.md/
 
 #Obs: Utilizar exportação das metricas do Prometheus via remote_write

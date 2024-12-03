@@ -25,13 +25,13 @@ remote_write:
 
 2. Thanos Store Gateway
 
-    - Este componente é responsável por acessar dados históricos armazenados em um bucket de objeto (por exemplo, S3 ou GCS).
+    - Este componente é responsável por acessar dados históricos armazenados em um bucket de objeto (por exemplo: S3 ou GCS).
     - Ele torna os dados de longa retenção acessíveis para consultas, integrando-os com as métricas mais recentes.
 
 3. Thanos Compact
 
     - Comprime e organiza os blocos de dados no bucket para economizar espaço e melhorar a eficiência de leitura.
-    - Realiza operações como compaction e deduplicação nos dados armazenados.
+    - Realiza operações como compaction e deduplication nos dados armazenados.
 
 4. Thanos Querier
 

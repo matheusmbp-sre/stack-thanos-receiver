@@ -10,9 +10,7 @@ Fonte: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
 
 #Explo de remote_write no Prometheus configuration:
 
-spec:
-remote_write:
-- url: http://thanos-receiver.monitoring.svc.cluster.local:10908/api/v1/receive
+![image](https://github.com/user-attachments/assets/d78a36d2-0362-429b-8b8b-92169c26d77a)
 
 
 #Funcionamento:

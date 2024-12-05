@@ -8,7 +8,7 @@ fonte: https://thanos.io/v0.20/components/receive.md/
 #Obs: Utilizar exportação das metricas do Prometheus via remote_write
 Fonte: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
 
-#Explo de remote_write no Prometheus configuration:
+#Exemplo de remote_write no Prometheus configuration:
 
 ![image](https://github.com/user-attachments/assets/d78a36d2-0362-429b-8b8b-92169c26d77a)
 

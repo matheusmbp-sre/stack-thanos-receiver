@@ -10,7 +10,8 @@ Fonte: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
 
 #Exemplo de remote_write no Prometheus configuration:
 
-![image](https://github.com/user-attachments/assets/d78a36d2-0362-429b-8b8b-92169c26d77a)
+![image](https://github.com/user-attachments/assets/19be8a3d-18b5-4802-882a-63c7fb89c753)
+
 
 
 #Funcionamento:

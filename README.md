@@ -81,15 +81,16 @@ Dependências:
 4. Verificação e Testes
 
 4.1. Verifique os Pods
-
-  - ~ kubectl get pods -n monitoring
-
+```
+ kubectl get pods -n monitoring
+```
 Todos os pods do Thanos devem estar rodando sem erros.
 
 4.2. Consultar Métricas no Thanos Querier
 Acesse a interface do Thanos Querier para executar queries PromQL:
-  - ~ kubectl port-forward svc/thanos-querier 9090 -n monitoring
-
+```  
+ kubectl port-forward svc/thanos-querier 9090 -n monitoring
+```
 Acesse no navegador: http://localhost:9090
 ------------------------------------------------------------------------------------------------------------------------------------------
 5. Conclusão

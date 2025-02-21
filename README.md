@@ -9,7 +9,7 @@ Referências:
 [Documentação do Thanos Receiver](https://thanos.io/tip/components/receive.md/)
 
 [Documentação do Prometheus Remote Write](https://prometheus.io/docs/specs/remote_write_spec/)
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 1. Requisitos
 
 Antes de instalar esta stack, é necessário ter o Prometheus já instalado e configurado.
@@ -20,7 +20,7 @@ Dependências:
  - Helm v3+ (opcional, mas recomendado)
  - Prometheus instalado e rodando no cluster
  - Bucket de armazenamento (S3/GCS ou equivalente) para retenção de dados a longo prazo
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 2. Instalação
 
 2.1. Clonar o repositório
@@ -53,7 +53,7 @@ remoteWrite:
  - ~ kubectl apply -f thanos-store-gateway.yaml
  - ~ kubectl apply -f thanos-querier.yaml
  - ~ kubectl apply -f thanos-compactor.yaml
-
+-------------------------------------------------------------------------------------------------------------------------------------------
 3. Como Funciona?
 
 3.1. Componentes da Stack
@@ -74,7 +74,7 @@ remoteWrite:
  d. Thanos Querier
     - Interface central que consulta tanto dados em tempo real (Receiver) quanto históricos (Store Gateway).
     - Pode realizar deduplicação para evitar métricas redundantes.
-
+------------------------------------------------------------------------------------------------------------------------------------------
 4. Verificação e Testes
 
 4.1. Verifique os Pods
@@ -88,7 +88,7 @@ Acesse a interface do Thanos Querier para executar queries PromQL:
   - ~ kubectl port-forward svc/thanos-querier 9090 -n monitoring
 
 Acesse no navegador: http://localhost:9090
-
+------------------------------------------------------------------------------------------------------------------------------------------
 5. Conclusão
 
 Esta stack do Thanos permite que você expanda sua solução Prometheus para um ambiente escalável, distribuído e de alta disponibilidade.

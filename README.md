@@ -80,6 +80,7 @@ remoteWrite:
 4.1. Verifique os Pods
 
   - ~ kubectl get pods -n monitoring
+
 Todos os pods do Thanos devem estar rodando sem erros.
 
 4.2. Consultar Métricas no Thanos Querier

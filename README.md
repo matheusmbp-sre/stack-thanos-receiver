@@ -34,7 +34,8 @@ Dependências:
 
  Exemplo de configuração para remote_write no Prometheus:
 
-(```remoteWrite:
+```yaml
+    remoteWrite:
   - url: http://thanos-receiver.monitoring.svc.cluster.local:10908/api/v1/receive
     queueConfig:
       capacity: 50000
@@ -45,7 +46,8 @@ Dependências:
         replacement: us-east-2
         sourceLabels: [__address__]
         targetLabel: cluster
-    remoteTimeout: 30s```)
+    remoteTimeout: 30s
+```
 
 2.3. Aplicar os manifests no Kubernetes
 

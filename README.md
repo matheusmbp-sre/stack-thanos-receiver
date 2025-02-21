@@ -75,7 +75,6 @@ Dependências:
     - Realiza compaction e deduplicação dos dados armazenados.
 
  d. Thanos Querier
-   
     - Interface central que consulta tanto dados em tempo real (Receiver) quanto históricos (Store Gateway).
     - Pode realizar deduplicação para evitar métricas redundantes.
 ------------------------------------------------------------------------------------------------------------------------------------------

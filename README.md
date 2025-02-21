@@ -34,7 +34,7 @@ Dependências:
 
  Exemplo de configuração para remote_write no Prometheus:
 
-remoteWrite:
+( remoteWrite:
   - url: http://thanos-receiver.monitoring.svc.cluster.local:10908/api/v1/receive
     queueConfig:
       capacity: 50000
@@ -45,7 +45,7 @@ remoteWrite:
         replacement: us-east-2
         sourceLabels: [__address__]
         targetLabel: cluster
-    remoteTimeout: 30s
+    remoteTimeout: 30s )
 
 2.3. Aplicar os manifests no Kubernetes
 
@@ -93,3 +93,8 @@ Acesse no navegador: http://localhost:9090
 
 Esta stack do Thanos permite que você expanda sua solução Prometheus para um ambiente escalável, distribuído e de alta disponibilidade.
 Se você precisa de retenção de longo prazo para suas métricas, esta é a abordagem ideal!
+
+Desenho da solução:
+![image](https://github.com/user-attachments/assets/cecf1e52-82e4-442a-aefe-95ce567d1812)
+
+

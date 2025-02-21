@@ -24,10 +24,10 @@ Dependências:
 2. Instalação
 
 2.1. Clonar o repositório
-
- - ~ git clone https://github.com/matheusmbp-sre/stack-thanos-receiver.git
- - ~ cd stack-thanos-receiver
-
+```
+  git clone https://github.com/matheusmbp-sre/stack-thanos-receiver.git
+  cd stack-thanos-receiver
+```
 2.2. Configurar os manifests YAML
 
  Verifique e edite os arquivos YAML conforme necessário, principalmente o thanos-receiver.yaml e o thanos-s3-config.yaml.

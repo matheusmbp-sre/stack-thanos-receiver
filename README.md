@@ -50,11 +50,12 @@ Dependências:
 ```
 
 2.3. Aplicar os manifests no Kubernetes
-
- - ~ kubectl apply -f thanos-receiver.yaml 
- - ~ kubectl apply -f thanos-store-gateway.yaml
- - ~ kubectl apply -f thanos-querier.yaml
- - ~ kubectl apply -f thanos-compactor.yaml
+```
+  ~ kubectl apply -f thanos-receiver.yaml 
+  ~ kubectl apply -f thanos-store-gateway.yaml
+  ~ kubectl apply -f thanos-querier.yaml
+  ~ kubectl apply -f thanos-compactor.yaml
+```
 -------------------------------------------------------------------------------------------------------------------------------------------
 3. Como Funciona?
 

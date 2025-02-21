@@ -1,44 +1,93 @@
-# stack-thanos-receiver
+Stack Thanos Receiver
 
-#Objetivo
+Objetivo
 
-Este projeto tem como objetivo implementar uma solução de monitoramento e gerenciamento de métricas com o Thanos. Ele permite a coleta, armazenamento e consulta de métricas de múltiplos clusters Prometheus, garantindo alta disponibilidade, escalabilidade e retenção de longo prazo. Ideal para ambientes em larga escala com diversos clusters k8s. 
-fonte: https://thanos.io/v0.20/components/receive.md/
+Este projeto implementa uma solução de monitoramento e gerenciamento de métricas com o Thanos, permitindo a coleta, armazenamento e consulta de métricas de múltiplos clusters Prometheus. A solução garante alta disponibilidade, escalabilidade e retenção de longo prazo. Ideal para ambientes de larga escala com diversos clusters Kubernetes.
 
-#Obs: Utilizar exportação das metricas do Prometheus via remote_write
-Fonte: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
+Referências:
 
-#Exemplo de remote_write no Spec do manifesto do Prometheus configuration:
+[Documentação do Thanos Receiver](https://thanos.io/tip/components/receive.md/)
 
-![image](https://github.com/user-attachments/assets/19be8a3d-18b5-4802-882a-63c7fb89c753)
+[Documentação do Prometheus Remote Write](https://prometheus.io/docs/specs/remote_write_spec/)
 
+1. Requisitos
 
+Antes de instalar esta stack, é necessário ter o Prometheus já instalado e configurado.
 
-#Funcionamento:
+Dependências:
 
+ - Kubernetes (k8s) v1.20+
+ - Helm v3+ (opcional, mas recomendado)
+ - Prometheus instalado e rodando no cluster
+ - Bucket de armazenamento (S3/GCS ou equivalente) para retenção de dados a longo prazo
 
-1. Thanos Receiver
+2. Instalação
 
-    - O Receiver coleta métricas enviadas via remote_write do Prometheus.
-    - Distribui as métricas recebidas em diferentes "tenants" ou clusters, com base em configurações de labels (exemplo: receive_cluster).
-    - Utiliza um hashring para centralizar os endpoints e balancear as métricas entre os diferentes pods de Receiver.
+2.1. Clonar o repositório
 
-2. Thanos Store Gateway
+ - ~ git clone https://github.com/matheusmbp-sre/stack-thanos-receiver.git
+ - ~ cd stack-thanos-receiver
 
-    - Este componente é responsável por acessar dados históricos armazenados em um bucket de objeto (por exemplo: S3 ou GCS).
-    - Ele torna os dados de longa retenção acessíveis para consultas, integrando-os com as métricas mais recentes.
+2.2. Configurar os manifests YAML
 
-3. Thanos Compact
+ Verifique e edite os arquivos YAML conforme necessário, principalmente o thanos-receiver.yaml e o thanos-s3-config.yaml.
 
+ Exemplo de configuração para remote_write no Prometheus:
+
+remoteWrite:
+  - url: http://thanos-receiver.monitoring.svc.cluster.local:10908/api/v1/receive
+    queueConfig:
+      capacity: 50000
+      maxSamplesPerSend: 100
+      maxShards: 10
+    writeRelabelConfigs:
+      - action: replace
+        replacement: us-east-2
+        sourceLabels: [__address__]
+        targetLabel: cluster
+    remoteTimeout: 30s
+
+2.3. Aplicar os manifests no Kubernetes
+
+ - ~ kubectl apply -f thanos-receiver.yaml 
+ - ~ kubectl apply -f thanos-store-gateway.yaml
+ - ~ kubectl apply -f thanos-querier.yaml
+ - ~ kubectl apply -f thanos-compactor.yaml
+
+3. Como Funciona?
+
+3.1. Componentes da Stack
+
+ a. Thanos Receiver
+    - Coleta métricas enviadas via remote_write do Prometheus.
+    - Distribui as métricas em diferentes "tenants" ou clusters, baseado em labels (exemplo: receive_cluster).
+    - Usa hashing para balancear a carga entre os pods de Receiver.
+
+ b. Thanos Store Gateway
+    - Acessa dados históricos armazenados em um bucket de objeto (S3/GCS/etc.).
+    - Permite que as consultas acessem tanto dados recentes quanto dados de longa retenção.
+       
+ c. Thanos Compact
     - Comprime e organiza os blocos de dados no bucket para economizar espaço e melhorar a eficiência de leitura.
-    - Realiza operações como compaction e deduplication nos dados armazenados.
+    - Realiza compaction e deduplicação dos dados armazenados.
 
-4. Thanos Querier
+ d. Thanos Querier
+    - Interface central que consulta tanto dados em tempo real (Receiver) quanto históricos (Store Gateway).
+    - Pode realizar deduplicação para evitar métricas redundantes.
 
-    - Atende às consultas de métricas.
-    - Atua como uma interface central que consulta tanto dados em tempo real (do Receiver) quanto históricos (do Store Gateway).
-    - Pode realizar deduplicação de dados para garantir que múltiplos Prometheus com métricas redundantes não impactem os resultados das consultas.
+4. Verificação e Testes
 
+4.1. Verifique os Pods
 
-#Desenho da solução:
-![image](https://github.com/user-attachments/assets/a5e6e864-73aa-45e0-bfad-b2b30c0222ca)
+  - ~ kubectl get pods -n monitoring
+Todos os pods do Thanos devem estar rodando sem erros.
+
+4.2. Consultar Métricas no Thanos Querier
+Acesse a interface do Thanos Querier para executar queries PromQL:
+  - ~ kubectl port-forward svc/thanos-querier 9090 -n monitoring
+Acesse no navegador: http://localhost:9090
+
+5. Conclusão
+
+Esta stack do Thanos permite que você expanda sua solução Prometheus para um ambiente escalável, distribuído e de alta disponibilidade.
+Se você precisa de retenção de longo prazo para suas métricas, esta é a abordagem ideal!
